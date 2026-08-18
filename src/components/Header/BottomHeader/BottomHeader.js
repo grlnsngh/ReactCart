@@ -18,10 +18,12 @@ class BottomHeader extends Component{
         })
         .then(response => response.json())
         .then(jsonResponse => {
-            console.log(jsonResponse);
             this.setState({
                   categories: jsonResponse.message
             })
+        })
+        .catch(error => {
+            console.error('Failed to load categories:', error);
         });
     }
 
