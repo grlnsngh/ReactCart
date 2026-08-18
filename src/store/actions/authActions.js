@@ -29,30 +29,34 @@ export const signup = (user) => {
 
 export const authenticate = (email, password) => {
     return async dispatch => {
-        const response = await fetch(`${base_url}/user/login`, {
-            headers: {
-                'Content-Type' : 'application/json',
-                'Accepts': 'application/json'
-            },
-            method: 'POST',
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        });
-
-        const jsonResponse = await response.json();
-        if(response.status === 200){
-
-            window.localStorage.setItem('auth', JSON.stringify(response.message));
-
-            dispatch({
-                type: AUTHENTICATE_USER,
-                auth: jsonResponse.message
+        try{
+            const response = await fetch(`${base_url}/user/login`, {
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Accepts': 'application/json'
+                },
+                method: 'POST',
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
             });
-        }
 
-        return jsonResponse.message;
+            const jsonResponse = await response.json();
+            if(response.status === 200){
+
+                window.localStorage.setItem('auth', JSON.stringify(response.message));
+
+                dispatch({
+                    type: AUTHENTICATE_USER,
+                    auth: jsonResponse.message
+                });
+            }
+
+            return jsonResponse.message;
+        }catch(error){
+            console.log(error);
+        }
     }
 }
 
